@@ -8,6 +8,6 @@ export class Product {
     @Column()
     name: string;
 
-    @Column()
+    @Column('float')
     price: number;
 }
