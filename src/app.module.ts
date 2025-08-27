@@ -5,6 +5,9 @@ import { ProductModule } from './product/product.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { Product } from './product/product.entity';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { User } from './auth/user.entity';
 
 @Module({
   imports: [ProductModule,
@@ -15,10 +18,14 @@ import { Product } from './product/product.entity';
       username: 'root',
       password: 'root',
       database: 'ecommerce',
-      entities: [Product],
+      entities: [Product, User],
       autoLoadEntities: true,
       synchronize: true
-    })
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    AuthModule,
   ],
   controllers: [UserController],
   providers: [AppService],
