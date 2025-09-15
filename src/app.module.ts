@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './app.controller';
+import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductModule } from './product/product.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -27,7 +27,7 @@ import { User } from './auth/user.entity';
     }),
     AuthModule,
   ],
-  controllers: [UserController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {

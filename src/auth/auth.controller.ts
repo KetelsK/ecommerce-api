@@ -1,6 +1,9 @@
-import { Controller, Get, Post, Request, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from './user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+
 
 @Controller('auth')
 export class AuthController {
@@ -8,21 +11,16 @@ export class AuthController {
     private authService: AuthService) { }
 
   @Post('login')
-  async login(@Request() req): Promise<{ access_token: string }> {
-    // Check that credentials are valid
-    if (await this.authService.checkCredentials(req.body)) {
-      return this.authService.login(req.body);
+  async login(@Body() user: CreateUserDto): Promise<{ access_token: string }> {
+    if (await this.authService.checkCredentials(user)) {
+      return this.authService.login(user);
     }
     throw new UnauthorizedException('Identifiants invalides');
   }
 
   @Post('register')
-  async register(@Request() req): Promise<{ access_token: string }> {
-    try {
-      return await this.authService.register(req.body);
-    } catch (error) {
-      throw error;
-    }
+  async register(@Body() user: CreateUserDto): Promise<{ access_token: string }> {
+    return await this.authService.register(user);
   }
 
   @UseGuards(AuthGuard('jwt'))
