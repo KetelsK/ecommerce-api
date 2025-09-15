@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import {  AuthGuard, PassportStrategy } from '@nestjs/passport';
+import { Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { User } from './user.entity';
+import { Request } from 'express';
 
 interface Payload {
   sub: number,
@@ -10,6 +11,11 @@ interface Payload {
 }
 
 export type UserWithoutPassword = Omit<User, 'password'>
+
+function cookieExtractor(req: Request): string | null {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+  return req?.cookies?.jwt || null;
+}
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -19,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new Error('JWT_SECRET is not defined in environment variables');
     }
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: cookieExtractor,
       ignoreExpiration: false,
       secretOrKey: jwtSecret,
     });
@@ -29,3 +35,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return { id: payload.sub, email: payload.username };
   }
 }
+
+@Injectable()
+export class JwtAuthGuard extends AuthGuard('jwt') {}

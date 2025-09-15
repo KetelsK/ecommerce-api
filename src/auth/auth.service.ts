@@ -14,7 +14,7 @@ export class AuthService {
         private readonly userRepository: Repository<User>,
         private jwtService: JwtService) { }
 
-    async login(user: any) {
+    login(user: UserWithoutPassword) {
         const payload: UserWithoutPassword = { id: user.id, email: user.email };
         return {
             access_token: this.jwtService.sign(payload),
@@ -28,11 +28,14 @@ export class AuthService {
             const hashedPassword: string = await this.hashPassword(data.password);
             const user: User = this.userRepository.create({ email, password: hashedPassword });
             await this.userRepository.save(user);
-            return await this.login(user);
-        } catch (error) {
-            if (error.code == 'ER_DUP_ENTRY') {
-                throw new ConflictException('User already exists')
+            return this.login(user);
+        } catch (error: unknown) {
+            if (typeof error === 'object' && error !== null) {
+                if ('code' in error && error.code == 'ER_DUP_ENTRY') {
+                    throw new ConflictException('User already exists')
+                }
             }
+
             throw error;
         }
     }
