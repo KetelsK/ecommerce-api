@@ -11,18 +11,20 @@ export class AuthController {
   constructor(
     private authService: AuthService) { }
 
+
+
   @Post('login')
-  async login(@Body() user: CreateUserDto, @Res({ passthrough: true }) res: Response): Promise<{ message: string }> {
+  async login(@Body() user: CreateUserDto, @Res({ passthrough: true }) res: Response): Promise<{ access_token: string }> {
     if (await this.authService.checkCredentials(user)) {
-      const { access_token } = this.authService.login(user);
-      res.cookie('jwt', access_token, {
-        httpOnly: true,
-        secure: false,     // true en prod (https)
-        sameSite: 'strict',
-      });
-      return { message: 'Login successful' };
+      return { access_token: this.assignTokenToCookie(user, res) };
     }
     throw new UnauthorizedException('Identifiants invalides');
+  }
+
+  @Post('register')
+  async register(@Body() user: CreateUserDto, @Res({ passthrough: true }) res: Response): Promise<{ access_token: string }> {
+    this.assignTokenToCookie(user, res);
+    return await this.authService.register(user);
   }
 
   @Post('logout')
@@ -31,14 +33,21 @@ export class AuthController {
     return { message: 'Logged out' };
   }
 
-  @Post('register')
-  async register(@Body() user: CreateUserDto): Promise<{ access_token: string }> {
-    return await this.authService.register(user);
-  }
+
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  private assignTokenToCookie(user: CreateUserDto, res: Response) {
+    const { access_token } = this.authService.login(user);
+    res.cookie('jwt', access_token, {
+      httpOnly: true,
+      secure: false,     // true en prod (https)
+      sameSite: 'strict',
+    });
+    return access_token;
   }
 }
