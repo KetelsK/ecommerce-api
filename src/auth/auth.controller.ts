@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post, Request, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Response } from 'express';
 import { JwtAuthGuard } from './jwt.strategy';
