@@ -8,9 +8,12 @@ import { Product } from './product/product.entity';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { User } from './auth/user.entity';
+import { ProductReviewModule } from './product-review/product-review.module';
+import { ProductReview } from './product-review/product-review.entity';
 
 @Module({
-  imports: [ProductModule,
+  imports: [
+    ProductModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -18,7 +21,7 @@ import { User } from './auth/user.entity';
       username: 'root',
       password: 'root',
       database: 'ecommerce',
-      entities: [Product, User],
+      entities: [Product, ProductReview, User],
       autoLoadEntities: true,
       synchronize: true
     }),
@@ -26,6 +29,7 @@ import { User } from './auth/user.entity';
       isGlobal: true,
     }),
     AuthModule,
+    ProductReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -10,4 +10,7 @@ export class Product {
 
     @Column('float')
     price: number;
+
+    @Column('text')
+    image: string;
 }

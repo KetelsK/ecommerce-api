@@ -47,6 +47,7 @@ export class AuthService {
         }
         // Check that password is correct
         const passwordMatch: boolean | null = await this.comparePassword(user.password, foundUser.password);
+        user.id = foundUser.id;
         return passwordMatch ? foundUser : null;
     }
 
