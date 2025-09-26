@@ -35,13 +35,15 @@ export class AuthService {
                     throw new ConflictException('User already exists')
                 }
             }
-
             throw error;
         }
     }
 
     async checkCredentials(user: User): Promise<User | null> {
-        const foundUser: User | null = await this.userRepository.findOne({ where: { email: user.email } });
+        const foundUser: User | null = await this.userRepository.findOne({
+            where: { email: user.email },
+            select: ['id', 'email', 'password']
+        });
         if (!foundUser) {
             return null;
         }
