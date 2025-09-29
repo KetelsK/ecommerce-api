@@ -32,7 +32,7 @@ export class AuthService {
         } catch (error: unknown) {
             if (typeof error === 'object' && error !== null) {
                 if ('code' in error && error.code == 'ER_DUP_ENTRY') {
-                    throw new ConflictException('User already exists')
+                    throw new ConflictException('Un utilisateur utilisant cette adresse email existe déjà')
                 }
             }
             throw error;

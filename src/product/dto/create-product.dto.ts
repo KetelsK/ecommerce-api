@@ -7,6 +7,7 @@ export class CreateProductDto {
     name: string;
     @IsNumber({ maxDecimalPlaces: 2 })
     price: number;
+    @IsOptional()
     @IsString()
     @Matches(/^data:image\/(png|jpeg);base64,[A-Za-z0-9+/=]+$/)
     image: string;

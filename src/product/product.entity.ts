@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, IsNull, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Product {
@@ -11,6 +11,6 @@ export class Product {
     @Column('float')
     price: number;
 
-    @Column('text')
-    image: string;
+    @Column({ type: 'longtext', nullable: true })
+    image?: string;
 }
