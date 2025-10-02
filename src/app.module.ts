@@ -10,6 +10,8 @@ import { ConfigModule } from '@nestjs/config';
 import { User } from './auth/user.entity';
 import { ProductReviewModule } from './product-review/product-review.module';
 import { ProductReview } from './product-review/product-review.entity';
+import { CartModule } from './cart/cart.module';
+import { Cart } from './cart/cart.entity';
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import { ProductReview } from './product-review/product-review.entity';
       username: 'root',
       password: 'root',
       database: 'ecommerce',
-      entities: [Product, ProductReview, User],
+      entities: [Product, ProductReview, User, Cart],
       autoLoadEntities: true,
       synchronize: true
     }),
@@ -30,6 +32,7 @@ import { ProductReview } from './product-review/product-review.entity';
     }),
     AuthModule,
     ProductReviewModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],
