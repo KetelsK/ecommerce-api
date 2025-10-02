@@ -1,4 +1,5 @@
 import { User } from "src/auth/user.entity";
+import { Product } from "src/product/product.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -12,13 +13,16 @@ export class ProductReview {
     @Column('float')
     rating: number;
 
-    @ManyToOne(() => User, { eager: true})
-    @JoinColumn({ name: 'userId' }) // on force le nom de la FK
+    @ManyToOne(() => User, { eager: true })
+    @JoinColumn({ name: 'userId' })
     user: User;
 
     @Column('int')
-    @ManyToOne(() => User)
     userId: number;
+
+    @ManyToOne(() => Product, { eager: true })
+    @JoinColumn({ name: 'productId' })
+    product: Product;
 
     @Column('int')
     productId: number;
