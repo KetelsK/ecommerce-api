@@ -11,7 +11,7 @@ export class CartController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   @HttpCode(200)
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<Cart[] | null> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<Cart | null> {
     return this.cartService.getCartByUserId(id);
   }
 
@@ -23,7 +23,7 @@ export class CartController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
+  @Delete('/item/:id')
   @HttpCode(204)
   delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.cartService.delete(id);

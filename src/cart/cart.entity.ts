@@ -1,6 +1,6 @@
 import { User } from "src/auth/user.entity";
-import { Product } from "src/product/product.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { CartItem } from "./cart-item/cart-item.entity";
 
 @Entity()
 export class Cart {
@@ -14,13 +14,6 @@ export class Cart {
     @Column({ type: "int" })
     userId: number;
 
-    @ManyToOne(() => Product, { eager: true })
-    @JoinColumn({ name: "productId" })
-    product: Product;
-
-    @Column({ type: "int" })
-    productId: number;
-
-    @Column('int', { default: 1 })
-    count: number;
+    @OneToMany(() => CartItem, item => item.cart, { cascade: true, eager: true })
+    items: CartItem[];
 }

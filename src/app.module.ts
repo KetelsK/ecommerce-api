@@ -12,6 +12,8 @@ import { ProductReviewModule } from './product-review/product-review.module';
 import { ProductReview } from './product-review/product-review.entity';
 import { CartModule } from './cart/cart.module';
 import { Cart } from './cart/cart.entity';
+import { CartItem } from './cart/cart-item/cart-item.entity';
+import { CartItemModule } from './cart/cart-item/cart-item.module';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { Cart } from './cart/cart.entity';
       username: 'root',
       password: 'root',
       database: 'ecommerce',
-      entities: [Product, ProductReview, User, Cart],
+      entities: [Product, ProductReview, User, Cart, CartItem],
       autoLoadEntities: true,
       synchronize: true
     }),
@@ -33,6 +35,7 @@ import { Cart } from './cart/cart.entity';
     AuthModule,
     ProductReviewModule,
     CartModule,
+    CartItemModule
   ],
   controllers: [AppController],
   providers: [AppService],
